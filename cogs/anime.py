@@ -91,7 +91,7 @@ def action_view(category: str, invoker: discord.Member, target: discord.Member |
         container = discord.ui.Container(accent_colour=discord.Colour(color))
         container.add_item(discord.ui.TextDisplay(f"## {title}"))
         container.add_item(discord.ui.Separator(spacing=discord.SeparatorSpacing.small))
-        container.add_item(discord.ui.MediaGallery(discord.ui.MediaGalleryItem(image_url)))
+        container.add_item(discord.ui.MediaGallery(discord.MediaGalleryItem(image_url)))
         if meta:
             container.add_item(discord.ui.Separator(spacing=discord.SeparatorSpacing.small))
             container.add_item(discord.ui.TextDisplay(meta))
@@ -121,7 +121,7 @@ def image_view(category: str, result: dict) -> discord.ui.LayoutView:
         container = discord.ui.Container(accent_colour=discord.Colour(color))
         container.add_item(discord.ui.TextDisplay(f"## {label}"))
         container.add_item(discord.ui.Separator(spacing=discord.SeparatorSpacing.small))
-        container.add_item(discord.ui.MediaGallery(discord.ui.MediaGalleryItem(image_url)))
+        container.add_item(discord.ui.MediaGallery(discord.MediaGalleryItem(image_url)))
         if meta:
             container.add_item(discord.ui.Separator(spacing=discord.SeparatorSpacing.small))
             container.add_item(discord.ui.TextDisplay(meta))
@@ -149,7 +149,7 @@ class AnimeCog(commands.Cog):
 
     anime = app_commands.Group(name="anime", description="Anime commands powered by nekos.best")
 
-    # -- Image commands -------------------------------------------------------
+    # -- Image commands --
 
     @anime.command(name="neko", description="Get a neko image")
     async def neko(self, interaction: discord.Interaction):
@@ -187,7 +187,7 @@ class AnimeCog(commands.Cog):
             return
         await interaction.followup.send(view=image_view("husbando", result))
 
-    # -- Action commands ------------------------------------------------------
+    # -- Action commands --
 
     async def _action(self, interaction: discord.Interaction, category: str, target: discord.Member | None):
         await interaction.response.defer()
@@ -278,7 +278,7 @@ class AnimeCog(commands.Cog):
     async def laugh(self, interaction: discord.Interaction, target: discord.Member = None):
         await self._action(interaction, "laugh", target)
 
-    # -- Help -----------------------------------------------------------------
+    # -- Help --
 
     @anime.command(name="help", description="List all anime commands")
     async def help(self, interaction: discord.Interaction):
