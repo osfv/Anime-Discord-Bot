@@ -1,6 +1,8 @@
-import discord
-from discord.ext import commands
 import os
+
+import discord
+from discord import app_commands
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,8 +24,9 @@ async def setup_hook():
     try:
         synced = await bot.tree.sync()
         print(f"[+] Synced {len(synced)} slash command(s).")
-    except Exception as e:
-        print(f"[!] Failed to sync commands: {e}")
+    except Exception as error:
+        print(f"[!] Failed to sync commands: {error}")
+
 
 bot.setup_hook = setup_hook
 
@@ -34,7 +37,7 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.watching,
-            name="anime  |  /help"
+            name="anime | /anime help",
         )
     )
 
@@ -44,6 +47,20 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         return
     raise error
+
+
+@bot.tree.error
+async def on_app_command_error(
+    interaction: discord.Interaction,
+    error: app_commands.AppCommandError,
+):
+    print(f"[!] App command error: {error}")
+    message = "Something went wrong while running that command. Try again in a moment."
+
+    if interaction.response.is_done():
+        await interaction.followup.send(message, ephemeral=True)
+    else:
+        await interaction.response.send_message(message, ephemeral=True)
 
 
 if __name__ == "__main__":
